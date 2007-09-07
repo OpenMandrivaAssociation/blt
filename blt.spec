@@ -82,7 +82,7 @@ This package provides headers needed to build packages based on BLT.
 %patch3 -p1 -b .mkdir_p
 %patch4 -p1 -b .64bit-fixes
 %patch5 -p1
-autoconf
+autoconf-2.13
 
 %build
 %configure
