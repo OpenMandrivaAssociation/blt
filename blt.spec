@@ -17,7 +17,7 @@ Patch3:		blt2.4z-mkdir_p.patch
 Patch4:		blt2.4z-64bit-fixes.patch
 Patch5:		blt-2.4z-tcl8.5-fix.patch
 Requires:	%libname
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	tk-devel
 BuildRequires:	tcl-devel
 BuildRequires:	autoconf2.1
