@@ -21,6 +21,7 @@ BuildRequires:	X11-devel
 BuildRequires:	tk-devel
 BuildRequires:	tcl-devel
 BuildRequires:	autoconf2.1
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 BLT is an extension to the Tk toolkit. BLT's most useful feature is the
