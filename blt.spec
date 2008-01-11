@@ -5,7 +5,7 @@
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
 Version:	2.4z
-Release:	%mkrel 14
+Release:	%mkrel 15
 License:	MIT
 Group:		System/Libraries
 URL:		http://www.sourceforge.net/projects/blt/
