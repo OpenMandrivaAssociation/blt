@@ -5,7 +5,7 @@
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
 Version:	2.4z
-Release:	%mkrel 17
+Release:	%mkrel 18
 License:	MIT
 Group:		System/Libraries
 URL:		http://www.sourceforge.net/projects/blt/
@@ -99,8 +99,8 @@ rm -rf $RPM_BUILD_ROOT
 
 ln -sf libBLT.so.2.4 $RPM_BUILD_ROOT%_libdir/libBLT.so
 ln -sf libBLTlite.so.2.4 $RPM_BUILD_ROOT%_libdir/libBLTlite.so
-ln -sf bltwish-2.4 $RPM_BUILD_ROOT%_bindir/bltwish
-ln -sf bltsh-2.4 $RPM_BUILD_ROOT%_bindir/bltsh
+ln -sf bltwish24 $RPM_BUILD_ROOT%_bindir/bltwish
+ln -sf bltsh24 $RPM_BUILD_ROOT%_bindir/bltsh
 
 # Dadou - 2.4u-2mdk - Don't put in %%_libdir things which should be in %%_docdir
 rm -fr $RPM_BUILD_ROOT/%_prefix/lib/blt2.4/demos
