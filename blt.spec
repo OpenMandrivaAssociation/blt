@@ -5,7 +5,7 @@
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
 Version:	2.4z
-Release:	%mkrel 16
+Release:	%mkrel 17
 License:	MIT
 Group:		System/Libraries
 URL:		http://www.sourceforge.net/projects/blt/
@@ -16,6 +16,10 @@ Patch2:		blt2.4z-libdir.patch
 Patch3:		blt2.4z-mkdir_p.patch
 Patch4:		blt2.4z-64bit-fixes.patch
 Patch5:		blt-2.4z-tcl8.5-fix.patch
+# Loosens the version checking, or else it will fail when built against
+# any Tcl/Tk with a minor version (8.5.1, 8.5.2, 8.5.3) - braindead test
+# AdamW 2008/07
+Patch6:		blt-2.4z-exact.patch
 Requires:	%libname
 BuildRequires:	X11-devel
 BuildRequires:	tk-devel
@@ -82,6 +86,7 @@ This package provides headers needed to build packages based on BLT.
 %patch3 -p1 -b .mkdir_p
 %patch4 -p1 -b .64bit-fixes
 %patch5 -p1
+%patch6 -p1 -b .exact
 autoconf-2.13
 
 %build
