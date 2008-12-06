@@ -1,11 +1,7 @@
-%define major 2
-%define	libname	%mklibname %{name} %{major}
-%define	libname_devel %mklibname %{name} %{major} -d
-
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
 Version:	2.4z
-Release:	%mkrel 18
+Release:	%mkrel 19
 License:	MIT
 Group:		System/Libraries
 URL:		http://www.sourceforge.net/projects/blt/
@@ -20,11 +16,18 @@ Patch5:		blt-2.4z-tcl8.5-fix.patch
 # any Tcl/Tk with a minor version (8.5.1, 8.5.2, 8.5.3) - braindead test
 # AdamW 2008/07
 Patch6:		blt-2.4z-exact.patch
-Requires:	%libname
+# Part fix, part kludge for Tcl 8.6 (interp->result, TIP #330) - AdamW
+# 2008/12
+Patch7:		blt-2.4z-tcl86.patch
+# Fix a use of /usr/local/bin - AdamW 2008/12
+Patch8:		blt-2.4z-local.patch
 BuildRequires:	X11-devel
 BuildRequires:	tk-devel
 BuildRequires:	tcl-devel
 BuildRequires:	autoconf2.1
+Obsoletes:	%{name}-scripts < %{version}-%{release}
+Obsoletes:	%{mklibname blt 2}
+Obsoletes:	%{mklibname blt 2 -d}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -34,52 +37,9 @@ and miscellaneous other commands. Note that you won't need to do any patching
 of the Tcl or Tk source files to use BLT, but you will need to have Tcl/Tk
 installed in order to use BLT.
 
-%package	scripts
-Summary:	TCL Libraries for BLT
-Group:		System/Libraries
-
-%description	scripts
-BLT is an extension to the Tk toolkit. BLT's most useful feature is the
-provision of more widgets for Tk, but it also provides more geometry managers
-and miscellaneous other commands. Note that you won't need to do any patching
-of the Tcl or Tk source files to use BLT, but you will need to have Tcl/Tk
-installed in order to use BLT.
-
-This package provides TCL libraries needed to use BLT.
-
-%package -n	%libname
-Summary:	Shared libraries needed to use BLT
-Group:		System/Libraries
-Requires:	blt-scripts = %{version}
-
-%description -n	%libname
-BLT is an extension to the Tk toolkit. BLT's most useful feature is the
-provision of more widgets for Tk, but it also provides more geometry managers
-and miscellaneous other commands. Note that you won't need to do any patching
-of the Tcl or Tk source files to use BLT, but you will need to have Tcl/Tk
-installed in order to use BLT.
-
-This package provides libraries needed to use BLT.
-
-%package -n	%libname_devel
-Summary:	Headers of BLT
-Group:		Development/Other
-Requires:	%libname = %version-%release
-Provides:	lib%name-devel = %version-%release
-Obsoletes:	blt-devel
-Provides:	blt-devel
-
-%description -n	%libname_devel
-BLT is an extension to the Tk toolkiy. BLT's most useful feature is the
-provision of more widgets for Tk, but it also provides more geometry managers
-and miscellaneous other commands. Note that you won't need to any patching
-of the Tcl or Tk source file to use BLT, but you will need to have Tcl/Tk
-installed in order to use BLT.
-
-This package provides headers needed to build packages based on BLT.
-
 %prep
-%setup -q -n %name%version
+%setup -q -n %{name}%{version}
+sed -i -e 's,local/,,g' demos/scripts/page.tcl
 %patch0 -p1
 %patch1 -p1 -b .rpath
 %patch2 -p1 -b .libdir
@@ -87,72 +47,55 @@ This package provides headers needed to build packages based on BLT.
 %patch4 -p1 -b .64bit-fixes
 %patch5 -p1
 %patch6 -p1 -b .exact
+%patch7 -p1 -b .tcl86
+#patch8 -p1
 autoconf-2.13
 
 %build
-%configure
+%configure --libdir=%{tcl_sitearch}
 make 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%makeinstall
+rm -rf %{buildroot}
+make prefix=%{buildroot}%{_prefix} bindir=%{buildroot}%{_bindir} libdir=%{buildroot}%{tcl_sitearch} mandir=%{buildroot}%{_mandir} install
 
-ln -sf libBLT.so.2.4 $RPM_BUILD_ROOT%_libdir/libBLT.so
-ln -sf libBLTlite.so.2.4 $RPM_BUILD_ROOT%_libdir/libBLTlite.so
-ln -sf bltwish24 $RPM_BUILD_ROOT%_bindir/bltwish
-ln -sf bltsh24 $RPM_BUILD_ROOT%_bindir/bltsh
+ln -sf bltwish24 %{buildroot}%{_bindir}/bltwish
+ln -sf bltsh24 %{buildroot}%{_bindir}/bltsh
 
 # Dadou - 2.4u-2mdk - Don't put in %%_libdir things which should be in %%_docdir
-rm -fr $RPM_BUILD_ROOT/%_prefix/lib/blt2.4/demos
-rm -fr $RPM_BUILD_ROOT/%_prefix/lib/blt2.4/NEWS
-rm -fr $RPM_BUILD_ROOT/%_prefix/lib/blt2.4/PROBLEMS
-rm -fr $RPM_BUILD_ROOT/%_prefix/lib/blt2.4/README
-
-# Dadou - 2.4u-2mdk - Remove +x permissions in %%_docdir to be sure that RPM
-#                     will don't want some strange dependencies
-perl -pi -e "s|local/||" $RPM_BUILD_DIR/%name%version/demos/scripts/page.tcl
-perl -pi -e "s|local/||" $RPM_BUILD_DIR/%name%version/html/hiertable.html
+rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/NEWS
+rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/PROBLEMS
+rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/README
+rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/demos
 
 # Dadou - 2.4u-2mdk - Prevent conflicts with other packages
 for i in bitmap graph tabset tree watch; do
-	mv $RPM_BUILD_ROOT/%_mandir/mann/$i{,-blt}.n
+	mv %{buildroot}%{_mandir}/mann/$i{,-blt}.n
 done
 
-%multiarch_includes $RPM_BUILD_ROOT%{_includedir}/bltHash.h
+# need to be available as a shared lib as well as a tcl module
+ln -s %{tcl_sitearch}/libBLT24.so %{buildroot}%{_libdir}/libBLT24.so 
+ln -s %{tcl_sitearch}/libBLTlite24.so %{buildroot}%{_libdir}/libBLTlite24.so 
+
+# development crap, we don't have anything that builds against this
+# at present
+rm -rf %{buildroot}%{_includedir}
+rm -f %{buildroot}%{_libdir}/*.a
+rm -f %{buildroot}%{tcl_sitearch}/*.a
 
 %clean
-rm -fr $RPM_BUILD_ROOT
-
-%if %mdkversion < 200900
-%post -n %libname -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %libname -p /sbin/ldconfig
-%endif
+rm -fr %{buildroot}
 
 %files
 %defattr(-,root,root,-)
 %doc MANIFEST NEWS PROBLEMS README
-%doc demos/
 %doc examples/
 %doc html/
-%_bindir/*
-%_mandir/mann/*
-%_mandir/man3/*
-
-%files scripts
-%defattr(-,root,root,-)
-%doc MANIFEST NEWS PROBLEMS README
-%dir %{_prefix}/lib/blt2.4
-%{_prefix}/lib/blt2.4/*
-
-%files -n %libname
-%defattr(-,root,root,-)
-%_libdir/*.so
-
-%files -n %libname_devel
-%defattr(-,root,root,-)
-%_includedir/*.h
-%multiarch %{multiarch_includedir}/*.h
-%_libdir/*.a
+%doc demos/
+%{_bindir}/*
+%{_mandir}/mann/*
+%{_mandir}/man3/*
+%{tcl_sitearch}/*.so
+%{tcl_sitearch}/%{name}2.4
+%{_libdir}/*.so
 
