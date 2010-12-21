@@ -21,7 +21,7 @@ Patch6:		blt-2.4z-exact.patch
 Patch7:		blt-2.4z-tcl86.patch
 # Fix a use of /usr/local/bin - AdamW 2008/12
 Patch8:		blt-2.4z-local.patch
-BuildRequires:	X11-devel
+BuildRequires:	libx11-devel
 BuildRequires:	tk-devel
 BuildRequires:	tcl-devel
 BuildRequires:	autoconf2.1
@@ -49,15 +49,15 @@ sed -i -e 's,local/,,g' demos/scripts/page.tcl
 %patch6 -p1 -b .exact
 %patch7 -p1 -b .tcl86
 #patch8 -p1
-autoconf-2.13
 
 %build
-%configure --libdir=%{tcl_sitearch}
+autoconf-2.13
+%configure2_5x --libdir=%{tcl_sitearch}
 make 
 
 %install
 rm -rf %{buildroot}
-make prefix=%{buildroot}%{_prefix} bindir=%{buildroot}%{_bindir} libdir=%{buildroot}%{tcl_sitearch} mandir=%{buildroot}%{_mandir} install
+%makeinstall libdir=%{buildroot}%{tcl_sitearch}
 
 ln -sf bltwish24 %{buildroot}%{_bindir}/bltwish
 ln -sf bltsh24 %{buildroot}%{_bindir}/bltsh
@@ -74,8 +74,8 @@ for i in bitmap graph tabset tree watch; do
 done
 
 # need to be available as a shared lib as well as a tcl module
-ln -s %{tcl_sitearch}/libBLT24.so %{buildroot}%{_libdir}/libBLT24.so 
-ln -s %{tcl_sitearch}/libBLTlite24.so %{buildroot}%{_libdir}/libBLTlite24.so 
+ln -sf %{tcl_sitearch}/libBLT24.so %{buildroot}%{_libdir}/libBLT24.so 
+ln -sf %{tcl_sitearch}/libBLTlite24.so %{buildroot}%{_libdir}/libBLTlite24.so 
 
 # development crap, we don't have anything that builds against this
 # at present
