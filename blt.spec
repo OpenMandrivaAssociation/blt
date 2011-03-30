@@ -19,8 +19,6 @@ Patch6:		blt-2.4z-exact.patch
 # Part fix, part kludge for Tcl 8.6 (interp->result, TIP #330) - AdamW
 # 2008/12
 Patch7:		blt-2.4z-tcl86.patch
-# Fix a use of /usr/local/bin - AdamW 2008/12
-Patch8:		blt-2.4z-local.patch
 Patch9:		blt-2.4z-autoconf-fix.patch
 BuildRequires:	libx11-devel
 BuildRequires:	tk-devel
@@ -47,7 +45,6 @@ sed -i -e 's,local/,,g' demos/scripts/page.tcl
 %patch5 -p1
 %patch6 -p1 -b .exact
 %patch7 -p1 -b .tcl86
-#patch8 -p1
 %patch9 -p1 -b .autoconf~
 
 autoconf
