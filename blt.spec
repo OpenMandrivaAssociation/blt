@@ -1,7 +1,7 @@
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
 Version:	2.4z
-Release:	%mkrel 23
+Release:	24
 License:	MIT
 Group:		System/Libraries
 URL:		http://www.sourceforge.net/projects/blt/
@@ -21,14 +21,13 @@ Patch6:		blt-2.4z-exact.patch
 Patch7:		blt-2.4z-tcl86.patch
 # Fix a use of /usr/local/bin - AdamW 2008/12
 Patch8:		blt-2.4z-local.patch
-Patch9:	blt-2.4z-autoconf-fix.patch
+Patch9:		blt-2.4z-autoconf-fix.patch
 BuildRequires:	libx11-devel
 BuildRequires:	tk-devel
 BuildRequires:	tcl-devel
 Obsoletes:	%{name}-scripts < %{version}-%{release}
 Obsoletes:	%{mklibname blt 2}
 Obsoletes:	%{mklibname blt 2 -d}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 BLT is an extension to the Tk toolkit. BLT's most useful feature is the
@@ -58,7 +57,6 @@ autoconf
 make 
 
 %install
-rm -rf %{buildroot}
 %makeinstall libdir=%{buildroot}%{tcl_sitearch}
 
 ln -sf bltwish24 %{buildroot}%{_bindir}/bltwish
@@ -85,11 +83,7 @@ rm -rf %{buildroot}%{_includedir}
 rm -f %{buildroot}%{_libdir}/*.a
 rm -f %{buildroot}%{tcl_sitearch}/*.a
 
-%clean
-rm -fr %{buildroot}
-
 %files
-%defattr(-,root,root,-)
 %doc MANIFEST NEWS PROBLEMS README
 %doc examples/
 %doc html/
@@ -100,4 +94,3 @@ rm -fr %{buildroot}
 %{tcl_sitearch}/*.so
 %{tcl_sitearch}/%{name}2.4
 %{_libdir}/*.so
-
