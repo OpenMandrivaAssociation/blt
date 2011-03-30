@@ -71,7 +71,7 @@ rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/README
 rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/demos
 
 # Dadou - 2.4u-2mdk - Prevent conflicts with other packages
-for i in bitmap graph tabset tree watch; do
+for i in bitmap busy graph tabset tree watch; do
 	mv %{buildroot}%{_mandir}/mann/$i{,-blt}.n
 done
 
