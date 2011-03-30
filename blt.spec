@@ -21,10 +21,10 @@ Patch6:		blt-2.4z-exact.patch
 Patch7:		blt-2.4z-tcl86.patch
 # Fix a use of /usr/local/bin - AdamW 2008/12
 Patch8:		blt-2.4z-local.patch
+Patch9:	blt-2.4z-autoconf-fix.patch
 BuildRequires:	libx11-devel
 BuildRequires:	tk-devel
 BuildRequires:	tcl-devel
-BuildRequires:	autoconf2.1
 Obsoletes:	%{name}-scripts < %{version}-%{release}
 Obsoletes:	%{mklibname blt 2}
 Obsoletes:	%{mklibname blt 2 -d}
@@ -49,9 +49,11 @@ sed -i -e 's,local/,,g' demos/scripts/page.tcl
 %patch6 -p1 -b .exact
 %patch7 -p1 -b .tcl86
 #patch8 -p1
+%patch9 -p1 -b .autoconf~
+
+autoconf
 
 %build
-autoconf-2.13
 %configure2_5x --libdir=%{tcl_sitearch}
 make 
 
