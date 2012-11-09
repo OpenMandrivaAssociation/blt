@@ -1,0 +1,202 @@
+--- blt2.4z/configure.in.libdir	2002-10-04 01:33:23.000000000 -0400
++++ blt2.4z/configure.in	2003-04-03 12:57:44.000000000 -0500
+@@ -457,6 +457,12 @@
+ # -----------------------------------------------------------------------
+ AC_PATH_X
+ 
++# Determine system libdir name
++case $target in
++  ppc64-*|sparc64-*|x86_64-*) LIB=lib64;;
++  *) LIB=lib;;
++esac
++
+ # -----------------------------------------------------------------------
+ #
+ #	Find the Tcl build configuration file "tclConfig.sh"
+@@ -476,8 +482,8 @@
+     if test -r "$dir/tclConfig.sh" ; then
+       tcl_config_sh="$dir/tclConfig.sh"
+       break
+-    elif test -r "$dir/lib/tclConfig.sh" ; then
+-      tcl_config_sh="$dir/lib/tclConfig.sh"
++    elif test -r "$dir/${LIB}/tclConfig.sh" ; then
++      tcl_config_sh="$dir/${LIB}/tclConfig.sh"
+       break
+     elif test -r "$dir/$blt_platform/tclConfig.sh" ; then
+       tcl_config_sh="$dir/$blt_platform/tclConfig.sh"
+@@ -498,8 +504,8 @@
+     if test -r "$dir/tclConfig.sh" ; then
+       tcl_config_sh="$dir/tclConfig.sh"
+       break
+-    elif test -r "$dir/lib/tclConfig.sh" ; then
+-      tcl_config_sh="$dir/lib/tclConfig.sh"
++    elif test -r "$dir/${LIB}/tclConfig.sh" ; then
++      tcl_config_sh="$dir/${LIB}/tclConfig.sh"
+       break
+     elif test -r "$dir/$blt_platform/tclConfig.sh" ; then
+       tcl_config_sh="$dir/$blt_platform/tclConfig.sh"
+@@ -537,8 +543,8 @@
+       if test -r "$dir/tclConfig.sh" ; then
+ 	tcl_config_sh="$dir/tclConfig.sh"
+ 	break
+-      elif test -r "$dir/lib/tclConfig.sh" ; then
+-	tcl_config_sh="$dir/lib/tclConfig.sh"
++      elif test -r "$dir/${LIB}/tclConfig.sh" ; then
++	tcl_config_sh="$dir/${LIB}/tclConfig.sh"
+ 	break
+       fi
+     done
+@@ -572,8 +578,8 @@
+     if test -r "$dir/tkConfig.sh" ; then
+       tk_config_sh="$dir/tkConfig.sh"
+       break
+-    elif test -r "$dir/lib/tkConfig.sh" ; then
+-      tk_config_sh="$dir/lib/tkConfig.sh"
++    elif test -r "$dir/${LIB}/tkConfig.sh" ; then
++      tk_config_sh="$dir/${LIB}/tkConfig.sh"
+       break
+     elif test -r "$dir/$blt_platform/tkConfig.sh" ; then
+       tk_config_sh="$dir/$blt_platform/tkConfig.sh"
+@@ -595,8 +601,8 @@
+     if test -r "$dir/tkConfig.sh" ; then
+       tk_config_sh="$dir/tkConfig.sh"
+       break
+-    elif test -r "$dir/lib/tkConfig.sh" ; then
+-      tk_config_sh="$dir/lib/tkConfig.sh"
++    elif test -r "$dir/${LIB}/tkConfig.sh" ; then
++      tk_config_sh="$dir/${LIB}/tkConfig.sh"
+       break
+     elif test -r "$dir/$blt_platform/tkConfig.sh" ; then
+       tk_config_sh="$dir/$blt_platform/tkConfig.sh"
+@@ -635,8 +641,8 @@
+       if test -r "$dir/tkConfig.sh" ; then
+ 	tk_config_sh="$dir/tkConfig.sh"
+ 	break
+-      elif test -r "$dir/lib/tkConfig.sh" ; then
+-	tk_config_sh="$dir/lib/tkConfig.sh"
++      elif test -r "$dir/${LIB}/tkConfig.sh" ; then
++	tk_config_sh="$dir/${LIB}/tkConfig.sh"
+ 	break
+       fi
+     done
+@@ -752,11 +758,11 @@
+   fi
+ else
+   for libname in \
+-   "${TCL_EXEC_PREFIX}/lib/lib${TCL_LIB_NAME}.${SHLIB_SUFFIX}" \
+-   "${TCL_EXEC_PREFIX}/lib/lib${TCL_LIB_NAME}.a" 
++   "${TCL_EXEC_PREFIX}/${LIB}/lib${TCL_LIB_NAME}.${SHLIB_SUFFIX}" \
++   "${TCL_EXEC_PREFIX}/${LIB}/lib${TCL_LIB_NAME}.a" 
+   do
+     if test -r "$libname" ; then
+-      TCL_LIB_DIR="${TCL_EXEC_PREFIX}/lib"
++      TCL_LIB_DIR="${TCL_EXEC_PREFIX}/${LIB}"
+       break
+     fi
+   done
+@@ -782,11 +788,11 @@
+   fi
+ else
+   for libname in \
+-   "${TK_EXEC_PREFIX}/lib/lib${TK_LIB_NAME}.${SHLIB_SUFFIX}" \
+-   "${TK_EXEC_PREFIX}/lib/lib${TK_LIB_NAME}.a"
++   "${TK_EXEC_PREFIX}/${LIB}/lib${TK_LIB_NAME}.${SHLIB_SUFFIX}" \
++   "${TK_EXEC_PREFIX}/${LIB}/lib${TK_LIB_NAME}.a"
+   do
+     if test -r "$libname" ; then
+-      TK_LIB_DIR="${TK_EXEC_PREFIX}/lib"
++      TK_LIB_DIR="${TK_EXEC_PREFIX}/${LIB}"
+       break
+     fi
+   done
+@@ -851,7 +857,7 @@
+ # -----------------------------------------------------------------------
+ 
+ # Tk libraries
+-if test "${TK_LIB_DIR}" = "/usr/lib" ; then
++if test "${TK_LIB_DIR}" = "${libdir}" ; then
+   LIB_SPECS="${LIB_SPECS} ${TK_LIB_SPEC}"
+ else
+   LIB_SPECS="${LIB_SPECS} -L${TK_LIB_DIR} ${TK_LIB_SPEC}"
+@@ -863,7 +869,7 @@
+ fi
+ 
+ # Tcl libraries
+-if test "${TCL_LIB_DIR}" = "/usr/lib" -o \
++if test "${TCL_LIB_DIR}" = "${libdir}" -o \
+ 	"${TCL_LIB_DIR}" = "${TK_LIB_DIR}" ; then
+   LIB_SPECS="${LIB_SPECS} ${TCL_LIB_SPEC}"
+ else
+@@ -875,7 +881,7 @@
+   fi
+ fi
+ 
+-if test "${TCL_LIB_DIR}" = "/usr/lib" ; then
++if test "${TCL_LIB_DIR}" = "${libdir}" ; then
+   TCL_ONLY_LIB_SPECS="${TCL_LIB_SPEC}"
+ else
+   TCL_ONLY_LIB_SPECS="-L${TCL_LIB_DIR} ${TCL_LIB_SPEC}"
+@@ -894,7 +900,7 @@
+ 
+   if test "x${x_libraries}" = "x"  -o \
+ 	  "x${x_libraries}" = "NONE"  -o \
+-  	  "${x_libraries}" = "/usr/lib" -o  \
++  	  "${x_libraries}" = "${libdir}" -o  \
+ 	  "${x_libraries}" = "${TK_LIB_DIR}"  -o \
+ 	  "${x_libraries}" = "${TCL_LIB_DIR}" ; then
+     LIB_SPECS="${LIB_SPECS} -lX11"
+@@ -975,21 +981,6 @@
+ 
+ BLT_VERSION=${BLT_MAJOR_VERSION}.${BLT_MINOR_VERSION}
+ 
+-# Add BLT to the run path
+-libdir=${exec_prefix}/lib
+-
+-if test "x${libdir}" != "x"  -a \
+-	"${libdir}" != "/usr/lib" -a  \
+-	"${libdir}" != "${x_libraries}" -a  \
+-	"${libdir}" != "${TK_LIB_DIR}"  -a \
+-	"${libdir}" != "${TCL_LIB_DIR}" ; then
+-  if test "x${loader_run_path}" = "x" ; then
+-    loader_run_path="${libdir}"
+-  else
+-    loader_run_path="${libdir}:${loader_run_path}"
+-  fi
+-fi
+-
+ aix_lib_specs="${aix_lib_specs} ${LIBS}"
+ LIB_SPECS="${LIB_SPECS} ${LIBS}"
+ TCL_ONLY_LIB_SPECS="${TCL_ONLY_LIB_SPECS} ${LIBS}"
+--- blt2.4z/library/Makefile.in~	2003-04-03 14:10:10.000000000 -0500
++++ blt2.4z/library/Makefile.in	2003-04-03 14:10:47.000000000 -0500
+@@ -8,7 +8,7 @@
+ lib_prefix    = @BLT_LIB_PREFIX@
+ srcdir       = @srcdir@
+ libdir       = @libdir@
+-scriptdir    = @BLT_LIBRARY@
++scriptdir    = $(libdir)/blt$(version)
+ 
+ INSTALL      = @INSTALL@
+ INSTALL_DATA = @INSTALL_DATA@
+--- blt2.4z/demos/Makefile.in	2002-02-18 16:11:46.000000000 -0800
++++ blt2.4z/demos/Makefile.in.new	2008-12-04 13:43:30.000000000 -0800
+@@ -6,7 +6,7 @@
+ exec_prefix =	@exec_prefix@
+ version =	@BLT_VERSION@
+ libdir =	@libdir@
+-scriptdir =	$(prefix)/lib/blt$(version)
++scriptdir =	$(libdir)/blt$(version)
+ destdir =	$(scriptdir)/demos
+ srcdir =	@srcdir@
+ 
+--- blt2.4z/Makefile.in	2002-02-18 16:11:43.000000000 -0800
++++ blt2.4z/Makefile.in.new	2008-12-04 13:44:42.000000000 -0800
+@@ -13,7 +13,7 @@
+ includedir =	@includedir@
+ libdir =	@libdir@
+ version =	@BLT_VERSION@
+-scriptdir =	$(prefix)/lib/blt$(version)
++scriptdir =	$(libdir)/blt$(version)
+ 
+ instdirs =	$(prefix) \
+ 		$(exec_prefix) \

@@ -1,0 +1,11 @@
+--- blt2.4z/src/bltInit.c	2008-07-14 14:42:12.000000000 -0700
++++ blt2.4z/src/bltInit.c.new	2008-07-14 14:42:17.000000000 -0700
+@@ -28,7 +28,7 @@
+ 
+ #include <bltInt.h>
+ 
+-#define EXACT 1
++#define EXACT 0
+ 
+ #ifndef BLT_LIBRARY
+ #ifdef WIN32

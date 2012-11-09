@@ -1,0 +1,11 @@
+--- blt2.4z/configure.in	2003-04-03 14:15:59.000000000 -0500
++++ blt2.4z/configure.in-rpath	2003-04-03 14:20:26.000000000 -0500
+@@ -1190,7 +1190,7 @@
+     SHLIB_CFLAGS="-fPIC"
+     SHLIB_LD="${CC}"
+     SHLIB_LD_FLAGS='-rdynamic -shared -Wl,-E -Wl,-soname,$@'
+-    LD_RUN_PATH="-Wl,-rpath,${loader_run_path}"
++    LD_RUN_PATH=""
+     
+     LDFLAGS=""
+     EXTRA_LIB_SPECS="-ldl"
