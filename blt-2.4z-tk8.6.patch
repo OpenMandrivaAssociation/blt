@@ -1,0 +1,28 @@
+diff -urN blt2.4z/src/tkButton.c blt2.4z-patched/src/tkButton.c
+--- blt2.4z/src/tkButton.c	2002-09-23 18:19:01.000000000 +1100
++++ blt2.4z-patched/src/tkButton.c	2012-09-15 15:22:28.668474457 +1100
+@@ -526,7 +526,23 @@
+ static Blt_TileChangedProc TileChangedProc;
+ static Tcl_CmdProc ButtonCmd, LabelCmd, CheckbuttonCmd, RadiobuttonCmd;
+ 
+-EXTERN int TkCopyAndGlobalEval _ANSI_ARGS_((Tcl_Interp *interp, char *script));
++#ifndef TkCopyAndGlobalEval
++int
++    TkCopyAndGlobalEval(
++    Tcl_Interp *interp,/* Interpreter in which to evaluate script. */
++    const char *script)/* Script to evaluate. */
++{
++    Tcl_DString buffer;
++    int code;
++
++    Tcl_DStringInit(&buffer);
++    Tcl_DStringAppend(&buffer, script, -1);
++    code = Tcl_EvalEx(interp, Tcl_DStringValue(&buffer),
++    Tcl_DStringLength(&buffer), TCL_EVAL_GLOBAL);
++    Tcl_DStringFree(&buffer);
++    return code;
++}
++#endif
+ 
+ #if (TK_MAJOR_VERSION > 4)
+ EXTERN void TkComputeAnchor _ANSI_ARGS_((Tk_Anchor anchor, Tk_Window tkwin, 
