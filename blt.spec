@@ -1,7 +1,7 @@
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
 Version:	2.4z
-Release:	28
+Release:	29
 License:	MIT
 Group:		System/Libraries
 URL:		http://www.sourceforge.net/projects/blt/
@@ -98,7 +98,7 @@ rm -f %{buildroot}%{tcl_sitearch}/*.a
 + Revision: 663325
 - mass rebuild
 
-* Wed Mar 30 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 2.4z-24
+* Wed Mar 30 2011 Per Ã˜yvind Karlsen <peroyvind@mandriva.org> 2.4z-24
 + Revision: 649288
 - drop unused P8
 - remove obsolete %%clean, buildroot, %%defattr etc.
@@ -177,11 +177,11 @@ rm -f %{buildroot}%{tcl_sitearch}/*.a
 * Wed Feb 09 2005 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 2.4z-9mdk
 - multiarch
 
-* Tue Jun 08 2004 Per �yvind Karlsen <peroyvind@linux-mandrake.com> 2.4z-8mdk
+* Tue Jun 08 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 2.4z-8mdk
 - fix buildrequires
 - wipe out buildroot before installing
 
-* Fri Apr 23 2004 Per �yvind Karlsen <peroyvind@linux-mandrake.com> 2.4z-7mdk
+* Fri Apr 23 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 2.4z-7mdk
 - buildrequires
 
 * Fri Dec 19 2003 Stefan van der Eijk <stefan@eijk.nu> 2.4z-6mdk
@@ -191,6 +191,6 @@ rm -f %{buildroot}%{tcl_sitearch}/*.a
 * Thu Jul 31 2003 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 2.4z-5mdk
 - Patch4: Some 64-bit fixes
 
-* Mon Jul 14 2003 Per �yvind Karlsen <peroyvind@sintrax.net> 2.4z-4mdk
+* Mon Jul 14 2003 Per Øyvind Karlsen <peroyvind@sintrax.net> 2.4z-4mdk
 - use %%mklibname macro
 
