@@ -4,7 +4,7 @@ Version:	2.4z
 Release:	29
 License:	MIT
 Group:		System/Libraries
-URL:		http://www.sourceforge.net/projects/blt/
+Url:		http://www.sourceforge.net/projects/blt/
 Source0:	BLT%{version}.tar.bz2
 Source1:	%{name}.rpmlintrc
 Patch0:		blt2.4z-patch-2.patch
@@ -22,9 +22,9 @@ Patch6:		blt-2.4z-exact.patch
 Patch7:		blt-2.4z-tcl86.patch
 Patch8:		blt-2.4z-tk8.6.patch
 Patch9:		blt-2.4z-autoconf-fix.patch
+BuildRequires:	pkgconfig(tcl)
+BuildRequires:	pkgconfig(tk)
 BuildRequires:	pkgconfig(x11)
-BuildRequires:	tk-devel
-BuildRequires:	tcl-devel
 
 %description
 BLT is an extension to the Tk toolkit. BLT's most useful feature is the
@@ -34,7 +34,7 @@ of the Tcl or Tk source files to use BLT, but you will need to have Tcl/Tk
 installed in order to use BLT.
 
 %prep
-%setup -q -n %{name}%{version}
+%setup -qn %{name}%{version}
 sed -i -e 's,local/,,g' demos/scripts/page.tcl
 %patch0 -p1
 %patch1 -p1 -b .rpath
@@ -65,7 +65,7 @@ rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/PROBLEMS
 rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/README
 rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/demos
 
-# Dadou - 2.4u-2mdk - Prevent conflicts with other packages
+)# Dadou - 2.4u-2mdk - Prevent conflicts with other packages
 for i in bitmap busy graph tabset tree watch; do
 	mv %{buildroot}%{_mandir}/mann/$i{,-blt}.n
 done
@@ -91,106 +91,4 @@ rm -f %{buildroot}%{tcl_sitearch}/*.a
 %{tcl_sitearch}/*.so
 %{tcl_sitearch}/%{name}2.4
 %{_libdir}/*.so
-
-
-%changelog
-* Tue May 03 2011 Oden Eriksson <oeriksson@mandriva.com> 2.4z-25
-+ Revision: 663325
-- mass rebuild
-
-* Wed Mar 30 2011 Per Ã˜yvind Karlsen <peroyvind@mandriva.org> 2.4z-24
-+ Revision: 649288
-- drop unused P8
-- remove obsolete %%clean, buildroot, %%defattr etc.
-- fix man page conflict with busy.n
-- fix build with recent autoconf (P9)
-
-* Wed Feb 02 2011 Funda Wang <fwang@mandriva.org> 2.4z-23
-+ Revision: 635007
-- rebuild
-- tighten BR
-
-* Tue Nov 30 2010 Oden Eriksson <oeriksson@mandriva.com> 2.4z-22mdv2011.0
-+ Revision: 603760
-- rebuild
-
-* Tue Mar 16 2010 Oden Eriksson <oeriksson@mandriva.com> 2.4z-21mdv2010.1
-+ Revision: 522211
-- rebuilt for 2010.1
-
-* Sun Aug 09 2009 Oden Eriksson <oeriksson@mandriva.com> 2.4z-20mdv2010.0
-+ Revision: 413175
-- rebuild
-
-* Sat Dec 06 2008 Adam Williamson <awilliamson@mandriva.org> 2.4z-19mdv2009.1
-+ Revision: 311075
-- rebuild for new tcl
-- drop all the ridiculous libification crap
-- add tcl86.patch (fix build for tcl 8.6)
-- add local.patch (fix a use of /usr/local)
-- update libdir.patch
-- spec clean
-
-* Tue Jul 15 2008 Adam Williamson <awilliamson@mandriva.org> 2.4z-18mdv2009.0
-+ Revision: 235704
-- fix the symlinks to binaries (#40947)
-
-* Mon Jul 14 2008 Adam Williamson <awilliamson@mandriva.org> 2.4z-17mdv2009.0
-+ Revision: 235698
-- add exact.patch: loosen the version checking in init to make it actually run
-
-* Mon Jun 16 2008 Thierry Vignaud <tv@mandriva.org> 2.4z-16mdv2009.0
-+ Revision: 220484
-- rebuild
-
-  + Pixel <pixel@mandriva.com>
-    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
-
-* Fri Jan 11 2008 Thierry Vignaud <tv@mandriva.org> 2.4z-15mdv2008.1
-+ Revision: 148966
-- rebuild
-- kill re-definition of %%buildroot on Pixel's request
-- buildrequires X11-devel instead of XFree86-devel
-
-  + Olivier Blin <oblin@mandriva.com>
-    - restore BuildRoot
-
-* Fri Sep 07 2007 Anssi Hannula <anssi@mandriva.org> 2.4z-14mdv2008.0
-+ Revision: 82098
-- use autoconf-2.13 explicitely
-- rebuild for new soname of tcl
-
-* Thu May 10 2007 Austin Acton <austin@mandriva.org> 2.4z-13mdv2008.0
-+ Revision: 25852
-- fix for tcl8.5
-
-
-* Mon May 01 2006 Stefan van der Eijk <stefan@eijk.nu> 2.4z-12mdk
-- rebuild for sparc
-
-* Sun Jan 01 2006 Oden Eriksson <oeriksson@mandriva.com> 2.4z-11mdk
-- fix deps
-
-* Sun Jan 01 2006 Oden Eriksson <oeriksson@mandriva.com> 2.4z-10mdk
-- rebuilt against soname aware deps
-
-* Wed Feb 09 2005 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 2.4z-9mdk
-- multiarch
-
-* Tue Jun 08 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 2.4z-8mdk
-- fix buildrequires
-- wipe out buildroot before installing
-
-* Fri Apr 23 2004 Per Øyvind Karlsen <peroyvind@linux-mandrake.com> 2.4z-7mdk
-- buildrequires
-
-* Fri Dec 19 2003 Stefan van der Eijk <stefan@eijk.nu> 2.4z-6mdk
-- remove redundant BuildRequires
-- rebuild
-
-* Thu Jul 31 2003 Gwenole Beauchesne <gbeauchesne@mandrakesoft.com> 2.4z-5mdk
-- Patch4: Some 64-bit fixes
-
-* Mon Jul 14 2003 Per Øyvind Karlsen <peroyvind@sintrax.net> 2.4z-4mdk
-- use %%mklibname macro
 
