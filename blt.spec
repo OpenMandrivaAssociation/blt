@@ -22,6 +22,7 @@ Patch6:		blt-2.4z-exact.patch
 Patch7:		blt-2.4z-tcl86.patch
 Patch8:		blt-2.4z-tk8.6.patch
 Patch9:		blt-2.4z-autoconf-fix.patch
+Patch10:	blt-aarch64.patch
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
 BuildRequires:	pkgconfig(x11)
@@ -46,6 +47,7 @@ sed -i -e 's,local/,,g' demos/scripts/page.tcl
 %patch7 -p1 -b .tcl86
 %patch8 -p1 -b .tk8.6
 %patch9 -p1 -b .autoconf~
+%patch10 -p1 -b .aarch64
 
 autoconf
 
