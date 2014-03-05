@@ -22,7 +22,6 @@ Patch6:		blt-2.4z-exact.patch
 Patch7:		blt-2.4z-tcl86.patch
 Patch8:		blt-2.4z-tk8.6.patch
 Patch9:		blt-2.4z-autoconf-fix.patch
-Patch10:	blt-aarch64.patch
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
 BuildRequires:	pkgconfig(x11)
