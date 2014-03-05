@@ -46,7 +46,6 @@ sed -i -e 's,local/,,g' demos/scripts/page.tcl
 %patch7 -p1 -b .tcl86
 %patch8 -p1 -b .tk8.6
 %patch9 -p1 -b .autoconf~
-%patch10 -p1 -b .aarch64
 
 autoconf
 

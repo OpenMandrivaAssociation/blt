@@ -6,7 +6,7 @@
  
 +# Determine system libdir name
 +case $target in
-+  ppc64-*|sparc64-*|x86_64-*) LIB=lib64;;
++  ppc64-*|sparc64-*|x86_64-*|aarch64-*) LIB=lib64;;
 +  *) LIB=lib;;
 +esac
 +
