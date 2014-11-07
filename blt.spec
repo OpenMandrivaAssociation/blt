@@ -1,7 +1,7 @@
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
 Version:	2.4z
-Release:	36
+Release:	37
 License:	MIT
 Group:		System/Libraries
 Url:		http://www.sourceforge.net/projects/blt/
@@ -50,7 +50,8 @@ sed -i -e 's,local/,,g' demos/scripts/page.tcl
 autoconf
 
 %build
-%configure2_5x --libdir=%{tcl_sitearch}
+# for some reason configure doesnt like CC being set (all file tests fail)
+%configure --libdir=%{tcl_sitearch} CC=''
 make
 
 %install
