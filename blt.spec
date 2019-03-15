@@ -51,7 +51,7 @@ autoconf
 
 %build
 # for some reason configure doesnt like CC being set (all file tests fail)
-%configure --libdir=%{tcl_sitearch} CC=''
+%configure --libdir=%{tcl_sitearch} --with-tcl=%{_libdir} --with-tk=%{_libdir} CC=''
 make
 
 %install
