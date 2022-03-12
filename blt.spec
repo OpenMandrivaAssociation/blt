@@ -52,10 +52,20 @@ autoconf
 %build
 # for some reason configure doesnt like CC being set (all file tests fail)
 %configure --libdir=%{tcl_sitearch} --with-tcl=%{_libdir} --with-tk=%{_libdir} CC=''
-make
+%make_build -j1 LDFLAGS="%{build_ldflags}"
 
 %install
-%makeinstall libdir=%{buildroot}%{tcl_sitearch}
+mkdir -p %{buildroot}%{_libdir}
+mkdir -p %{buildroot}%{_mandir}
+
+make prefix=%{buildroot}%{_prefix} \
+ exec_prefix=%{buildroot}%{_prefix} \
+ bindir=%{buildroot}%{_bindir} \
+ libdir=%{buildroot}%{tcl_sitearch} \
+ includedir=%{buildroot}%{_includedir} \
+ mandir=%{buildroot}%{_mandir} \
+ scriptdir=%{buildroot}%{tcl_sitearch}/%{name}2.4 \
+install
 
 ln -sf bltwish24 %{buildroot}%{_bindir}/bltwish
 ln -sf bltsh24 %{buildroot}%{_bindir}/bltsh
@@ -68,12 +78,12 @@ rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/demos
 
 # Dadou - 2.4u-2mdk - Prevent conflicts with other packages
 for i in bitmap busy graph tabset tree watch; do
-	mv %{buildroot}%{_mandir}/mann/$i{,-blt}.n
+    mv %{buildroot}%{_mandir}/mann/$i{,-blt}.n
 done
 
 # need to be available as a shared lib as well as a tcl module
-ln -sf %{tcl_sitearch}/libBLT24.so %{buildroot}%{_libdir}/libBLT24.so 
-ln -sf %{tcl_sitearch}/libBLTlite24.so %{buildroot}%{_libdir}/libBLTlite24.so 
+ln -sf %{tcl_sitearch}/libBLT24.so %{buildroot}%{_libdir}/libBLT24.so
+ln -sf %{tcl_sitearch}/libBLTlite24.so %{buildroot}%{_libdir}/libBLTlite24.so
 
 # development crap, we don't have anything that builds against this
 # at present
@@ -87,9 +97,8 @@ rm -f %{buildroot}%{tcl_sitearch}/*.a
 %doc html/
 %doc demos/
 %{_bindir}/*
-%{_mandir}/mann/*
-%{_mandir}/man3/*
+%doc %{_mandir}/mann/*
+%doc %{_mandir}/man3/*
 %{tcl_sitearch}/*.so
 %{tcl_sitearch}/%{name}2.4
 %{_libdir}/*.so
-
