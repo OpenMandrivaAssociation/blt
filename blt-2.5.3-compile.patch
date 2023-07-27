@@ -1,0 +1,36 @@
+diff -up blt2.5/configure.in.omv~ blt2.5/configure.in
+--- blt2.5/configure.in.omv~	2023-07-27 21:56:15.874032664 +0200
++++ blt2.5/configure.in	2023-07-27 21:56:34.517461347 +0200
+@@ -164,7 +164,7 @@ AC_SUBST(CFLAGS)
+ 
+ GCCFLAGS=""
+ if test "${blt_have_gcc}" = "yes" ; then
+-  GCCFLAGS="-Wall"
++  GCCFLAGS="-Wall -Wno-incompatible-function-pointer-types"
+   if test "${CFLAGS}" = "-g" ; then 
+     GCCFLAGS="-Wshadow -Winline -Wpointer-arith ${GCCFLAGS}"
+   fi
+diff -up blt2.5/generic/bltNsUtil.c.omv~ blt2.5/generic/bltNsUtil.c
+--- blt2.5/generic/bltNsUtil.c.omv~	2023-07-27 21:51:06.883927914 +0200
++++ blt2.5/generic/bltNsUtil.c	2023-07-27 21:54:37.243764817 +0200
+@@ -27,6 +27,8 @@
+ 
+ #include "bltInt.h"
+ #include "bltList.h"
++#define NO_UNISTD_H
++#include <tcl-private/generic/tclInt.h>
+ 
+ /* Namespace related routines */
+ 
+diff -up blt2.5/generic/bltTreeCmd.c.omv~ blt2.5/generic/bltTreeCmd.c
+--- blt2.5/generic/bltTreeCmd.c.omv~	2023-07-27 21:55:12.014564318 +0200
++++ blt2.5/generic/bltTreeCmd.c	2023-07-27 21:55:24.438849989 +0200
+@@ -8560,7 +8560,7 @@ ForeachOp(
+         if (result == TCL_CONTINUE ) continue;
+ 	if (result == TCL_ERROR) {
+             Tcl_AppendResult(interp,
+-            "\n    (\"tree foreach\" body line ", Blt_Itoa(interp->errorLine), ")\n", 0);
++            "\n    (\"tree foreach\" body line ", Blt_Itoa(Tcl_GetErrorLine(interp)), ")\n", 0);
+              break;
+         }
+         if (result != TCL_OK) {

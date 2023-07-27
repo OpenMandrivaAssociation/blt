@@ -1,18 +1,16 @@
 Summary:	A Tk toolkit extension, including widgets, geometry managers, etc
 Name:		blt
-Version:	2.4z
-Release:	42
+Version:	2.5.3
+Release:	1
 License:	MIT
 Group:		System/Libraries
-Url:		http://www.sourceforge.net/projects/blt/
-Source0:	BLT%{version}.tar.bz2
+# Originally at http://www.sourceforge.net/projects/blt/ - but it looks like that
+# has been abandoned ages ago
+Url:		https://sourceforge.net/projects/wize/
+Source0:	https://downloads.sourceforge.net/project/wize/blt-src-%{version}.zip
 Source1:	%{name}.rpmlintrc
-Patch0:		blt2.4z-patch-2.patch
 Patch1:		blt2.4z-configure.in-disable-rpath.patch
 Patch2:		blt2.4z-libdir.patch
-Patch3:		blt2.4z-mkdir_p.patch
-Patch4:		blt2.4z-64bit-fixes.patch
-Patch5:		blt-2.4z-tcl8.5-fix.patch
 # Loosens the version checking, or else it will fail when built against
 # any Tcl/Tk with a minor version (8.5.1, 8.5.2, 8.5.3) - braindead test
 # AdamW 2008/07
@@ -22,6 +20,7 @@ Patch6:		blt-2.4z-exact.patch
 Patch7:		blt-2.4z-tcl86.patch
 Patch8:		blt-2.4z-tk8.6.patch
 Patch9:		blt-2.4z-autoconf-fix.patch
+Patch10:	blt-2.5.3-compile.patch
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
 BuildRequires:	pkgconfig(x11)
@@ -34,18 +33,8 @@ of the Tcl or Tk source files to use BLT, but you will need to have Tcl/Tk
 installed in order to use BLT.
 
 %prep
-%setup -qn %{name}%{version}
+%autosetup -p1 -n %{name}%(echo %{version}|cut -d. -f1-2)
 sed -i -e 's,local/,,g' demos/scripts/page.tcl
-%patch0 -p1
-%patch1 -p1 -b .rpath
-%patch2 -p1 -b .libdir
-%patch3 -p1 -b .mkdir_p
-%patch4 -p1 -b .64bit-fixes
-%patch5 -p1
-%patch6 -p1 -b .exact
-%patch7 -p1 -b .tcl86
-%patch8 -p1 -b .tk8.6
-%patch9 -p1 -b .autoconf~
 
 autoconf
 
@@ -64,11 +53,11 @@ make prefix=%{buildroot}%{_prefix} \
  libdir=%{buildroot}%{tcl_sitearch} \
  includedir=%{buildroot}%{_includedir} \
  mandir=%{buildroot}%{_mandir} \
- scriptdir=%{buildroot}%{tcl_sitearch}/%{name}2.4 \
+ scriptdir=%{buildroot}%{tcl_sitearch}/%{name}2.5 \
 install
 
-ln -sf bltwish24 %{buildroot}%{_bindir}/bltwish
-ln -sf bltsh24 %{buildroot}%{_bindir}/bltsh
+ln -sf bltwish25 %{buildroot}%{_bindir}/bltwish
+ln -sf bltsh25 %{buildroot}%{_bindir}/bltsh
 
 # Dadou - 2.4u-2mdk - Don't put in %%_libdir things which should be in %%_docdir
 rm -fr %{buildroot}%{tcl_sitearch}/blt2.4/NEWS
@@ -82,8 +71,8 @@ for i in bitmap busy graph tabset tree watch; do
 done
 
 # need to be available as a shared lib as well as a tcl module
-ln -sf %{tcl_sitearch}/libBLT24.so %{buildroot}%{_libdir}/libBLT24.so
-ln -sf %{tcl_sitearch}/libBLTlite24.so %{buildroot}%{_libdir}/libBLTlite24.so
+ln -sf %{tcl_sitearch}/libBLT25.so %{buildroot}%{_libdir}/libBLT25.so
+ln -sf %{tcl_sitearch}/libBLTlite25.so %{buildroot}%{_libdir}/libBLTlite25.so
 
 # development crap, we don't have anything that builds against this
 # at present
@@ -100,5 +89,5 @@ rm -f %{buildroot}%{tcl_sitearch}/*.a
 %doc %{_mandir}/mann/*
 %doc %{_mandir}/man3/*
 %{tcl_sitearch}/*.so
-%{tcl_sitearch}/%{name}2.4
+%{tcl_sitearch}/%{name}2.5
 %{_libdir}/*.so

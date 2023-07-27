@@ -1,6 +1,6 @@
-diff -urN blt2.4z/src/tkButton.c blt2.4z-patched/src/tkButton.c
---- blt2.4z/src/tkButton.c	2002-09-23 18:19:01.000000000 +1100
-+++ blt2.4z-patched/src/tkButton.c	2012-09-15 15:22:28.668474457 +1100
+diff -urN blt2.4z/generic/tkButton.c blt2.4z-patched/generic/tkButton.c
+--- blt2.4z/generic/tkButton.c	2002-09-23 18:19:01.000000000 +1100
++++ blt2.4z-patched/generic/tkButton.c	2012-09-15 15:22:28.668474457 +1100
 @@ -526,7 +526,23 @@
  static Blt_TileChangedProc TileChangedProc;
  static Tcl_CmdProc ButtonCmd, LabelCmd, CheckbuttonCmd, RadiobuttonCmd;
