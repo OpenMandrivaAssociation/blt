@@ -21,6 +21,11 @@ Patch7:		blt-2.4z-tcl86.patch
 Patch8:		blt-2.4z-tk8.6.patch
 Patch9:		blt-2.4z-autoconf-fix.patch
 Patch10:	blt-2.5.3-compile.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(tcl)
 BuildRequires:	pkgconfig(tk)
 BuildRequires:	pkgconfig(x11)
